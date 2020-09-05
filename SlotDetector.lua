@@ -99,16 +99,16 @@ SlotDetector = (function()
     end
 
     local function identifyUnit(var, slots)
-        if type(var) ~= "table" then goto continue end
+        if type(var) ~= "table" then return slots end
         if var["getElementClass"] then
             local id = var["getId"]()
             
             if id == nil then 
-                goto continue 
+                return slots
             end
 
 
-            if slots.FoundIDs[id] ~= nil then goto continue end
+            if slots.FoundIDs[id] ~= nil then return slots end
             slots.FoundIDs[id] = true
 
             local class = var["getElementClass"]()
@@ -121,7 +121,7 @@ SlotDetector = (function()
                 end
 
                 table.insert(slots.FuelTanks.Space, var)
-                goto continue
+                return slots
             end
 
             if class == "AtmoFuelContainer" then
@@ -132,7 +132,7 @@ SlotDetector = (function()
                 end
 
                 table.insert(slots.FuelTanks.Atmo, var)
-                goto continue
+                return slots
             end
 
             if class == "RocketFuelContainer" then
@@ -143,60 +143,57 @@ SlotDetector = (function()
                 end
 
                 table.insert(slots.FuelTanks.Rocket, var)
-                goto continue
+                return slots
             end
 
             if class == "ScreenUnit" then
                 table.insert(slots.Screens, var)
+                return slots
             end
 
             if class == "DoorUnit" then
                 table.insert(slots.Doors, var)
+                return slots
             end
 
             if class == "DataBankUnit" then
                 table.insert(slots.Databanks, var) 
-                goto continue
+                return slots
             end
 
             if class == "TelemeterUnit" then
                 table.insert(slots.Telemeters, var)
-                goto continue
+                return slots
             end
 
             --Core unit
             if class == "CoreUnitDynamic" or class == "CoreUnitStatic" or class == "CoreUnitSpace" then
                 slots.Core = var 
-                goto continue
+                return slots
             end
 
             if string.find(class, "SpaceEngine") then 
                 table.insert(slots.Engines.Space, var)
-                goto continue
+                return slots
             end
 
             if string.find(class, "AtmosphericEngine") then 
                 table.insert(slots.Engines.Atmo, var)
-                goto continue
+                return slots
             end
 
             if string.find(class, "RocketEngine") then 
                 table.insert(slots.Engines.Rocket, var)
-                goto continue
+                return slots
             end
 
             if string.find(class, "VerticalBooster") then 
                 table.insert(slots.Engines.VerticalBooster, var)
-                goto continue
+                return slots
             end
 
         end
         
-        --if var["getRange"] then table.insert(slots.Radars, var) goto continue end
-        --if var["setBaseAltitude"] then table.insert(slots.AntiGrav, var) goto continue end
-
-        ::continue::
-
         return slots
     end
 
