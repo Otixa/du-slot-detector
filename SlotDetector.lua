@@ -8,6 +8,7 @@ SlotContainer = (function()
             Engines={Atmo={}, Rocket={}, Space={}, VerticalBooster={}}, 
             FuelTanks={Atmo={}, Rocket={}, Space={}}, 
             Core=nil, 
+            Unit=nil,
             Screens={}, 
             Telemeters={}, 
             Radars={}, 
@@ -190,6 +191,10 @@ SlotDetector = (function()
             if string.find(class, "VerticalBooster") then 
                 table.insert(slots.Engines.VerticalBooster, var)
                 return slots
+            end
+
+            if var["setTimer"] then 
+                slots.Unit = var
             end
 
         end
