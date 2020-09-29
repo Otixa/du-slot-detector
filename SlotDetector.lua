@@ -7,7 +7,8 @@ SlotContainer = (function()
             FoundIDs={}, 
             Engines={Atmo={}, Rocket={}, Space={}, VerticalBooster={}}, 
             FuelTanks={Atmo={}, Rocket={}, Space={}}, 
-            Core=nil, 
+            Core=nil,
+            Unit=nil,
             Screens={}, 
             Telemeters={}, 
             Radars={}, 
@@ -16,9 +17,6 @@ SlotContainer = (function()
             Doors={}
         }
     end
-
-
-
     return self
 end)()
 
@@ -189,6 +187,11 @@ SlotDetector = (function()
 
             if string.find(class, "VerticalBooster") then 
                 table.insert(slots.Engines.VerticalBooster, var)
+                return slots
+            end
+
+            if class == "CockpitFighterUnit" or class == "CockpitHovercraftUnit" or class == "CockpitCommandmentUnit" or class == "RemoteControlUnit" or class == "Generic" then
+                slots.Unit = var
                 return slots
             end
 
