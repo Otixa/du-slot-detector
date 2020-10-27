@@ -1,4 +1,5 @@
---require FuelTanks.lua
+--@class SlotContainer
+--@require FuelTanks
 
 SlotContainer = (function()
     local self = {}
