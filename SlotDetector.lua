@@ -1,4 +1,4 @@
---@class SlotContainer
+--@class SlotDetector
 --@require FuelTanks
 
 SlotContainer = (function()
