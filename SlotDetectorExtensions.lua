@@ -1,3 +1,7 @@
+--@require SlotDetector
+
+--@class SlotDetectorExtensions
+
 SlotDetector.VirtualSlot = function(unitID)
     local self = {}
 

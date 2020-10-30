@@ -1,5 +1,6 @@
 --@class SlotDetector
 --@require FuelTanks
+--@require Cores
 
 SlotContainer = (function()
     local self = {}
@@ -15,7 +16,9 @@ SlotContainer = (function()
             Radars={}, 
             AntiGrav={}, 
             Databanks={}, 
-            Doors={}
+            Doors={},
+            Emitters={},
+            Receivers={}
         }
     end
     return self
@@ -167,7 +170,17 @@ SlotDetector = (function()
 
             --Core unit
             if class == "CoreUnitDynamic" or class == "CoreUnitStatic" or class == "CoreUnitSpace" then
-                slots.Core = var 
+                slots.Core = var
+
+                local coreMass = var.getElementMassById(var.getId())
+                local coreType = "Dynamic"
+                if class == "CoreUnitStatic" then coreType = "Static" end
+                if class == "CoreUnitSpace" then coreType = "Space" end
+
+                for k,coreEntry in pairs(Cores) do
+                    if coreMass==coreEntry.Mass and coreType==coreEntry.Type then var.CoreType = coreEntry break end
+                end
+
                 return slots
             end
 
@@ -193,6 +206,15 @@ SlotDetector = (function()
 
             if class == "CockpitFighterUnit" or class == "CockpitHovercraftUnit" or class == "CockpitCommandmentUnit" or class == "RemoteControlUnit" or class == "Generic" then
                 slots.Unit = var
+                return slots
+            end
+
+            if class == "EmitterUnit" then
+                table.insert(slots.Emitters, var)
+                return slots
+            end
+            if class == "ReceiverUnit" then
+                endtable.insert(slots.Receivers, var)
                 return slots
             end
 
