@@ -214,7 +214,7 @@ SlotDetector = (function()
                 return slots
             end
             if class == "ReceiverUnit" then
-                endtable.insert(slots.Receivers, var)
+                table.insert(slots.Receivers, var)
                 return slots
             end
 
