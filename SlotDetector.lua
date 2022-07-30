@@ -6,16 +6,16 @@ SlotContainer = (function()
     local self = {}
     function self.new()
         return {
-            FoundIDs={}, 
-            Engines={Atmo={}, Rocket={}, Space={}, VerticalBooster={}}, 
-            FuelTanks={Atmo={}, Rocket={}, Space={}}, 
+            FoundIDs={},
+            Engines={Atmo={}, Rocket={}, Space={}, VerticalBooster={}},
+            FuelTanks={Atmo={}, Rocket={}, Space={}},
             Core=nil,
             Unit=nil,
-            Screens={}, 
-            Telemeters={}, 
-            Radars={}, 
-            AntiGrav={}, 
-            Databanks={}, 
+            Screens={},
+            Telemeters={},
+            Radars={},
+            AntiGrav={},
+            Databanks={},
             Doors={},
             Emitters={},
             Receivers={}
@@ -102,9 +102,9 @@ SlotDetector = (function()
 
     local function identifyUnit(var, slots)
         if type(var) ~= "table" then return slots end
-        if var["getElementClass"] then
-            local id = var["getId"]()
-            
+        if var["getClass"] then
+            local id = var["getLocalId"]()
+
             if id == nil then 
                 return slots
             end
@@ -113,7 +113,7 @@ SlotDetector = (function()
             if slots.FoundIDs[id] ~= nil then return slots end
             slots.FoundIDs[id] = true
 
-            local class = var["getElementClass"]()
+            local class = var["getClass"]()
 
             if class == "SpaceFuelContainer" then
                 local mass = round(var.getSelfMass(),2)
@@ -159,7 +159,7 @@ SlotDetector = (function()
             end
 
             if class == "DataBankUnit" then
-                table.insert(slots.Databanks, var) 
+                table.insert(slots.Databanks, var)
                 return slots
             end
 
@@ -172,7 +172,7 @@ SlotDetector = (function()
             if class == "CoreUnitDynamic" or class == "CoreUnitStatic" or class == "CoreUnitSpace" then
                 slots.Core = var
 
-                local coreMass = var.getElementMassById(var.getId())
+                local coreMass = var.getElementMassById(var.getLocalId())
                 local coreType = "Dynamic"
                 if class == "CoreUnitStatic" then coreType = "Static" end
                 if class == "CoreUnitSpace" then coreType = "Space" end
@@ -184,22 +184,22 @@ SlotDetector = (function()
                 return slots
             end
 
-            if string.find(class, "SpaceEngine") then 
+            if string.find(class, "SpaceEngine") then
                 table.insert(slots.Engines.Space, var)
                 return slots
             end
 
-            if string.find(class, "AtmosphericEngine") then 
+            if string.find(class, "AtmosphericEngine") then
                 table.insert(slots.Engines.Atmo, var)
                 return slots
             end
 
-            if string.find(class, "RocketEngine") then 
+            if string.find(class, "RocketEngine") then
                 table.insert(slots.Engines.Rocket, var)
                 return slots
             end
 
-            if string.find(class, "VerticalBooster") then 
+            if string.find(class, "VerticalBooster") then
                 table.insert(slots.Engines.VerticalBooster, var)
                 return slots
             end
@@ -219,12 +219,12 @@ SlotDetector = (function()
             end
 
         end
-        
+
         return slots
     end
 
     function self.DetectSlotsInNamespace(container, slotContainer)
-        local slots = slotContainer or SlotContainer.new() 
+        local slots = slotContainer or SlotContainer.new()
 
         for slotName,var in pairs(container) do
             slots = identifyUnit(var, slots)
@@ -243,6 +243,6 @@ SlotDetector = (function()
 
         return slots
     end
-    
+
     return self
 end)()
